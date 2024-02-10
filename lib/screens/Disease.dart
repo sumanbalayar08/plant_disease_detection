@@ -6,6 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'dart:convert';
 import 'package:plant_disease_detection/widget/ImageSlider.dart';
 import 'package:plant_disease_detection/service/WeatherService.dart';
+import 'DiseasePredict.dart';
 
 class Disease extends StatefulWidget {
   const Disease({super.key});
@@ -29,7 +30,7 @@ class _DiseaseState extends State<Disease> {
 
   @override
   Widget build(BuildContext context) {
-  double screenWidth = MediaQuery.of(context).size.width;
+    double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       appBar: AppBar(
@@ -187,7 +188,13 @@ class _DiseaseState extends State<Disease> {
                                     backgroundColor:
                                         Color.fromARGB(255, 64, 172, 255),
                                   ),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const DiseasePredict()));
+                                  },
                                 ),
                               ),
                             ],
@@ -201,7 +208,56 @@ class _DiseaseState extends State<Disease> {
               SizedBox(
                 height: 16,
               ),
-              WeatherService(),
+              Container(
+                width: screenWidth,
+                color: Color.fromARGB(255, 255, 255, 255),
+                child: Container(
+                  margin: EdgeInsets.all(10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            "Weather",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w900,
+                                fontSize: 20,
+                                fontStyle: FontStyle.italic),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      Container(
+                          padding: EdgeInsets.only(
+                            left: 16.0,
+                            right: 16.0,
+                            top: 25.0,
+                            bottom: 25.0,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Color.fromARGB(
+                                255, 255, 255, 255), // Adjust color as needed
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color.fromARGB(255, 214, 213, 213)
+                                    .withOpacity(0.5), // Shadow color
+                                spreadRadius: 1,
+                                blurRadius: 7,
+                                offset:
+                                    Offset(0, 1), // changes position of shadow
+                              ),
+                            ], // Half the width/height to get full circle
+                          ),
+                          child: WeatherService())
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
         ),

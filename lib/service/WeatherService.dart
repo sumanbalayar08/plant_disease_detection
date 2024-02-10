@@ -4,7 +4,6 @@ import 'package:geolocator/geolocator.dart';
 import 'dart:convert';
 
 class WeatherService extends StatefulWidget {
-
   @override
   State<WeatherService> createState() => _WeatherServiceState();
 }
@@ -65,30 +64,70 @@ class _WeatherServiceState extends State<WeatherService> {
     }
   }
 
-  @override
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: null, // Remove app bar to avoid overlaying with parent widget's app bar
-      body: Center(
-        child: Container(
-          // Add constraints to give the container a specific size
-          width: 200, // Adjust width as needed
-          height: 200, // Adjust height as needed
-          child: _weatherData != null
-              ? Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Temperature: ${_weatherData!['main']['temp']}',
-                    ),
-                    // Add more widgets to display other weather data as needed
-                  ],
-                )
-              : CircularProgressIndicator(), // Show loading indicator while fetching data
-        ),
-      ),
-    );
+  String getImagePath() {
+    String imgSource;
+
+    String weatherMain = _weatherData!['weather'][0]['main'];
+
+    if (weatherMain == 'Clouds') {
+      imgSource = 'assets/images/cloud.png';
+    } else if (weatherMain == 'Rain') {
+      imgSource = 'assets/images/rainfall.png';
+    } else if (weatherMain == 'Clear') {
+      imgSource = 'assets/images/sunlight.svg';
+    } else {
+      imgSource = 'assets/images/weather.png'; // Default image if no match
+    }
+
+    return imgSource;
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Color.fromARGB(255, 255, 255, 255),
+      child: _weatherData == null
+          ? Center(
+              child: CircularProgressIndicator(), // Circular loading indicator
+            )
+          : Row(
+              children: <Widget>[
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      "Today Weather",
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 7,
+                    ),
+                    Text(
+                      "${(_weatherData!['main']['temp'] - 273.15).toStringAsFixed(2)} °C",
+                      style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 7,
+                    ),
+                    Text(
+                      "${_weatherData!['weather'][0]['description']}",
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 118, 117, 117),
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                  ],
+                ),
+                Spacer(),
+                Image.asset(getImagePath())
+              ],
+            ),
+    );
+  }
 }

@@ -39,6 +39,8 @@ dependencies:
   enhanced_http: ^4.1.1
   flutter_dotenv: ^5.1.0
   geolocator: ^10.1.0
+  image_picker: ^1.0.7
+  google_fonts: ^6.1.0
 
 dev_dependencies:
   flutter_test:
